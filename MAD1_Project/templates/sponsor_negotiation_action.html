@@ -36,16 +36,23 @@
       <a href="/statistics_sponsor/sponsor={{username}}" id = "stats_sponsor_nav">Statistics</a>
       <a href = "/" id="logout">Logout</a>
   </nav>-->
-<body>
-    <form method="POST" action="/sponsor_action/username={{username}}/influencer={{influencer}}/campaign={{campaign}}/ad={{ad}}" id="data-form">
-        <input type="submit"  value="Accept" name="accept" id="accept"/>
-        <br />
-        <input type="submit"  value="Reject" name="reject" id="reject"/>
-    </form>
-    <button onclick="window.location.href='/negotiate/negotiator={{username}}/negotiatee={{influencer}}/campaign={{campaign}}/ad={{ad}}'">Negotiate</button>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <body>
+    <div class="container mt-5 text-center">
+      <form method="POST" action="/action/username={{username}}/influencer={{influencer}}/campaign={{campaign}}/ad={{ad}}" id="data-form">
+        <div class="mb-3">
+          <input type="submit" value="Accept" name="accept" id="accept" class="btn btn-success"/>
+        </div>
+        <div class="mb-3">
+          <input type="submit" value="Reject" name="reject" id="reject" class="btn btn-danger"/>
+        </div>
+      </form>
+      <button onclick="window.location.href='/negotiate/negotiator={{username}}/negotiatee={{influencer}}/campaign={{campaign}}/ad={{ad}}'" class="btn btn-warning">Negotiate</button>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
+  
 
 <script type="text/javascript">
     var value = sessionStorage.getItem("username");
@@ -65,9 +72,7 @@
             window.location.href="/";
         });
         var ad = window.location.href.split("ad=")[1];
-        console.log(ad);
         var influencer = window.location.href.split("influencer=")[1].split("/")[0];
-        var stipend = sessionStorage.getItem("stipend");
         var campaign = window.location.href.split("campaign=")[1].split("/")[0];
         document.getElementById("data-form").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -78,8 +83,7 @@
                 sponsor: sponsor,
                 ad: ad,
                 action: action,
-                campaign: campaign,
-                stipend: stipend
+                campaign: campaign
             };
             var jsonData = JSON.stringify(data);
             fetch("/sponsor_action/username=" + sponsor + "/influencer=" + influencer + "/campaign=" + campaign + "/ad=" + ad, {

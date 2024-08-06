@@ -37,15 +37,25 @@
     <a href = "/" id="logout">Logout</a>
 </nav>-->
 <body>
-    Influencer: {{ username }}<br />
-    <form method="POST" action="/new_ad_request/influencer={{username}}" id="data-form">
-        <input type="text" name="adName" id="adName" placeholder="Ad Name" required />
-        <input type="text" name="stipend" id="stipend" placeholder="Stipend" required />
-        <input type="submit"  value="Submit" />
+  <div class="container mt-5 text-center">
+    <h2>Influencer: {{ username }}</h2>
+    <form method="POST" action="/new_ad_request/influencer={{username}}" id="data-form" class="mt-4">
+      <div class="mb-3">
+        <input type="text" name="adName" id="adName" placeholder="Ad Name" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <input type="text" name="stipend" id="stipend" placeholder="Stipend" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+      </div>
     </form>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 
 <script type = "text/javascript">
     var value = sessionStorage.getItem("username");

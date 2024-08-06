@@ -1,9 +1,9 @@
-import select
 from flask import Flask, request, render_template
 import sqlite3
 from datetime import datetime
 
-from numpy import insert
+niche_dict = {'1': 'Fashion', '2': 'Food', '3': 'Travel', '4': 'Fitness', '5': 'Lifestyle', '6': 'Technology', '7': 'Education', '8': 'Entertainment', '9': 'Health', '10': 'Miscellaneous'}
+
 app = Flask(__name__)
 
 #Database Creation
@@ -11,9 +11,9 @@ connection = sqlite3.connect('database.db', check_same_thread=False)
 cursor = connection.cursor()
 
 #Database Tables
-cursor.execute("CREATE TABLE IF NOT EXISTS users_influencer ( username TEXT PRIMARY KEY, password TEXT, facebook_id TEXT, niche INT )")
+cursor.execute("CREATE TABLE IF NOT EXISTS users_influencer ( username TEXT PRIMARY KEY, password TEXT, facebook_id TEXT, niche TEXT )")
 connection.commit()
-cursor.execute("CREATE TABLE IF NOT EXISTS users_sponsor ( username TEXT PRIMARY KEY, password TEXT, facebook_id TEXT, niche INT )")
+cursor.execute("CREATE TABLE IF NOT EXISTS users_sponsor ( username TEXT PRIMARY KEY, password TEXT, facebook_id TEXT, niche TEXT )")
 connection.commit()
 cursor.execute("CREATE TABLE IF NOT EXISTS campaigns ( sponsor TEXT, campaignName TEXT, status TEXT, budget TEXT, public TEXT, description TEXT, start_date TEXT, end_date TEXT, UNIQUE (sponsor, campaignName) )")
 connection.commit()
@@ -223,16 +223,7 @@ def sponsor_spending(username):
         total += int(i[4])
     return total
 def influencer_ranking(niche):
-    cursor.execute("""
-        SELECT i.username,
-        SUM(CAST(a.stipend AS INTEGER)) AS total_stipend
-        FROM users_influencer i
-        JOIN ongoing_ad a
-        ON i.username = a.influencer
-        WHERE i.niche=?
-        GROUP BY i.username
-        ORDER BY total_stipend DESC
-    """, (niche,))
+    cursor.execute("""SELECT i.username, SUM(CAST(a.stipend AS INTEGER)) AS total_stipend FROM users_influencer i JOIN ongoing_ad a ON i.username = a.influencer WHERE i.niche=? GROUP BY i.username ORDER BY total_stipend DESC""", (niche,))
     connection.commit()
     return cursor.fetchall()
 def influencer_rank_by_rev(username, niche):
@@ -241,16 +232,7 @@ def influencer_rank_by_rev(username, niche):
         if l[i][0] == username:
             return i+1
 def sponsor_ranking(niche):
-    cursor.execute("""
-        SELECT i.username,
-        SUM(CAST(a.stipend AS INTEGER)) AS total_stipend
-        FROM users_sponsor i
-        JOIN ongoing_ad a
-        ON i.username = a.sponsor
-        WHERE i.niche=?
-        GROUP BY i.username
-        ORDER BY total_stipend DESC
-    """, (niche,))
+    cursor.execute("""SELECT i.username, SUM(CAST(a.stipend AS INTEGER)) AS total_stipend FROM users_sponsor i JOIN ongoing_ad a ON i.username = a.sponsor WHERE i.niche=? GROUP BY i.username ORDER BY total_stipend DESC""", (niche,))
     connection.commit()
     return cursor.fetchall()
 def sponsor_rank_by_exp(username, niche):
@@ -329,7 +311,8 @@ def signup_influencer():
         username = request.form['username']
         password = request.form['password']
         facebook_id = request.form['facebook']
-        niche = request.form['niche']
+        niche_key = request.form['niche']
+        niche = niche_dict[niche_key]
         try:
             insert_user_influencer(username, password, facebook_id, niche)
         except sqlite3.IntegrityError:
@@ -465,7 +448,8 @@ def signup_sponsor():
         username = request.form['username']
         password = request.form['password']
         facebook_id = request.form['facebook_id']
-        niche = request.form['niche']
+        niche_key = request.form['niche']
+        niche = niche_dict[niche_key]
         try:
             insert_user_sponsor(username, password, facebook_id, niche)
         except sqlite3.IntegrityError:
@@ -703,10 +687,10 @@ def negotiate(negotiator, negotiatee, ad, campaign):
         initial_amount = select_negotiation_particular(negotiatee, negotiator, campaign, ad)[0][5]
         if user_type == 'Influencer':
             change_dict = {'negotiator': negotiator, 'negotiatee': negotiatee, 'campaignName': campaign, 'adName': ad, 'initial_amount': initial_amount, 'negotiated_amount': new_stipend, 'user_type': 'Sponsor'}
-            insert_influencer_log(f"Negotiated ad: {ad} with sponsor: {negotiatee}")
+            insert_influencer_log(negotiator, f"Negotiated ad: {ad} with sponsor: {negotiatee}")
         elif user_type == 'Sponsor':
             change_dict = {'negotiator': negotiator, 'negotiatee': negotiatee, 'campaignName': campaign, 'adName': ad, 'initial_amount': initial_amount, 'negotiated_amount': new_stipend, 'user_type': 'Influencer'}
-            insert_sponsor_log(f"Negotiated ad: {ad} with influencer: {negotiatee}")
+            insert_sponsor_log(negotiator, f"Negotiated ad: {ad} with influencer: {negotiatee}")
         update_negotiation(change_dict)
         if type == 'Influencer':
             return render_template('home_influencer.html', username=negotiator)

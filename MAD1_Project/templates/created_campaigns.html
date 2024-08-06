@@ -36,9 +36,11 @@
       <a href="/statistics_sponsor/sponsor={{username}}" id = "stats_sponsor_nav">Statistics</a>
       <a href = "/" id="logout">Logout</a>
   </nav>-->
-<body>
-    <table>
-        <tr>
+  <body>
+    <div class="container mt-5">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
             <th>Created Campaign</th>
             <th>Status</th>
             <th>Request</th>
@@ -48,35 +50,40 @@
             <th>Description</th>
             <th>Start Date</th>
             <th>End Date</th>
-        </tr>
-        {% for campaign in campaigns %}
-            <tr>
-                <td>{{campaign.campaignName}}</td>
-                <td>{{campaign.status}}</td>
-                {% if campaign.status == "Not Assigned" %}
-                    <td>
-                        <a href = "/new_ad_request/campaign={{campaign.campaignName}}">Request Influencer</a>
-                    </td>
-                    <td>
-                        <a href="/edit_campaign/sponsor={{campaign.sponsor}}/campaign={{campaign.campaignName}}">Edit</a> <br />
-                        <a href="/delete_campaign/sponsor={{campaign.sponsor}}/campaign={{campaign.campaignName}}">Delete</a>
-                    </td>
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
-                <td>{{campaign.public}}</td>
-                <td>{{campaign.budget}}</td>
-                <td>{{campaign.description}}</td>
-                <td>{{campaign.start_date}}</td>
-                <td>{{campaign.end_date}}</td>
-            </tr>
-        {% endfor %}
-    </table>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+          </tr>
+        </thead>
+        <tbody>
+          {% for campaign in campaigns %}
+          <tr>
+            <td>{{ campaign.campaignName }}</td>
+            <td>{{ campaign.status }}</td>
+            {% if campaign.status == "Not Assigned" %}
+            <td>
+              <a href="/new_ad_request/campaign={{campaign.campaignName}}" class="btn btn-primary btn-sm">Request Influencer</a>
+            </td>
+            <td>
+              <a href="/edit_campaign/sponsor={{campaign.sponsor}}/campaign={{campaign.campaignName}}" class="btn btn-warning btn-sm">Edit</a>
+              <a href="/delete_campaign/sponsor={{campaign.sponsor}}/campaign={{campaign.campaignName}}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+            {% else %}
+            <td></td>
+            <td></td>
+            {% endif %}
+            <td>{{ campaign.public }}</td>
+            <td>{{ campaign.budget }}</td>
+            <td>{{ campaign.description }}</td>
+            <td>{{ campaign.start_date }}</td>
+            <td>{{ campaign.end_date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
-
 <script type="text/javascript">
     var value = sessionStorage.getItem("username");
     if(value == null || value == undefined)
