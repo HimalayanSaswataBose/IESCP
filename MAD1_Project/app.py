@@ -23,7 +23,7 @@ cursor.execute("CREATE TABLE IF NOT EXISTS negotiations ( negotiator TEXT, negot
 connection.commit()
 cursor.execute("CREATE TABLE IF NOT EXISTS ongoing_ad ( sponsor TEXT, influencer TEXT, campaignName TEXT, adName TEXT, stipend TEXT, UNIQUE (sponsor, influencer, campaignName, adName))")
 connection.commit()
-cursor.execute("CREATE TABLE IF NOT EXISTS log_influencer ( date TEXT, influencer TEXT, activity TEXT)")
+cursor.execute("CREATE TABLE IF NOT EXISTS log_influencer ( date TEXT, influencer TEXT, activity TEXT, UNIQUE(data))")
 connection.commit()
 cursor.execute("CREATE TABLE IF NOT EXISTS log_sponsor ( date TEXT, sponsor TEXT, activity TEXT, UNIQUE(date))")
 connection.commit()
