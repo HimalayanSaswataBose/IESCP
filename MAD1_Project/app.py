@@ -715,7 +715,7 @@ def login_admin():
         if username == 'admin' and password == 'admin':
             return render_template('home_admin.html', username=username)
         else:
-            return render_template('error_admin.html', message='Invalid credentials')
+            return render_template('error_admin_login.html', message='Invalid credentials')
 @app.route('/all_ad_requests', methods=['GET', 'POST'])
 def all_ad_requests():
     ad_requests = []
